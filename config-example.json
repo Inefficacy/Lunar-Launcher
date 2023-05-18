@@ -1,0 +1,43 @@
+{
+	"version": "1.8.9",
+	"launch": {
+		"mode": "download/file/default",
+		"file": "launcherRequest.json",
+		"directory": "~/.lunarclient/offline/multiver"
+	},
+	"jre": {
+		"mode": "environment/custom/lunar",
+		"custom": "path/to/java/home"
+	},
+	"ram": 8,
+	"arguments": [
+		"--add-modules", "jdk.naming.dns",
+		"--add-exports", "jdk.naming.dns/com.sun.jndi.dns=java.naming",
+		"-Djna.boot.library.path=natives",
+		"-Dlog4j2.formatMsgNoLookups=true",
+		"--add-opens", "java.base/java.io=ALL-UNNAMED",
+		"-Xms%ram%m",
+		"-Xmx%ram%m",
+		"-Djava.library.path=natives",
+		"-XX:+DisableAttachMechanism",
+		"-cp", "%classpath%", "com.moonsworth.lunar.genesis.Genesis",
+		"--version", "%version%",
+		"--accessToken", "0",
+		"--assetIndex", "%assetindex%",
+		"--userProperties", "{}",
+		"--gameDir", "%gamedir%",
+		"--texturesDir", "%texturesdir%",
+		"--launcherVersion", "2.15.1",
+		"--hwid", "none",
+		"--installationId", "none",
+		"--width", "854",
+		"--height", "480",
+		"--workingDirectory", ".",
+		"--classpathDir", ".",
+		"--ichorClassPath", "%ichorclasspath%",
+		"--ichorExternalFiles", "%ichorexternal%"
+	],
+	"custom_variables": {
+
+	}
+}

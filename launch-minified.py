@@ -1,67 +1,67 @@
-l='jre'
-k='custom'
-j='ram'
-i='natives'
-h='Darwin'
-g='Linux'
-f='file'
-e='download'
-d='java'
-c=print
-W='OptiFine'
-V='directory'
-U='mode'
-T='name'
-S='artifacts'
-R='launchTypeData'
-Q=None
-P=open
-K='Windows'
-F='version'
+m='jre'
+l='custom'
+k='ram'
+j='natives'
+i='Darwin'
+h='Linux'
+g='file'
+f='download'
+e='java'
+d=print
+X='OptiFine'
+W='directory'
+V='mode'
+U='name'
+T='artifacts'
+S='launchTypeData'
+R=None
+Q=open
+H='version'
+G='Windows'
 E='launch'
 D=False
-import json,os as B,requests as G,platform as X,re,subprocess as m
-H=X.system()
-A=json.load(P('config.json'))
+import json,os as B,requests as I,platform as Y,re,subprocess as L
+F=Y.system()
+A=json.load(Q('config.json'))
 def C(dir):return B.path.expanduser(dir.replace('/',B.sep))
-def Y(home):return B.path.join(home,'bin','javaw.exe'if H==K else d)
-def Z(wd):return sorted(filter(B.path.isdir,[B.path.join(wd,A)for A in B.listdir(wd)]),key=B.path.getmtime)[0]
+def Z(home):return B.path.join(home,'bin','javaw.exe'if F==G else e)
+def a(wd):return sorted(filter(B.path.isdir,[B.path.join(wd,A)for A in B.listdir(wd)]),key=B.path.getmtime)[0]
 def n(argument):
 	A=argument
 	for B in re.findall('%([^%]+)%',A):
-		if B in O.keys():A=A.replace(f"%{B}%",O[B])
+		if B in P.keys():A=A.replace(f"%{B}%",P[B])
 	return A
-class a:
+class b:
 	def __init__(A,req):A.req=req
 	def download(B):
-		try:A=G.post('https://api.lunarclientprod.com/launcher/launch',json=B.req)
-		except G.exceptions.RequestException as C:return D
-		if A.status_code!=200 or A.json()==Q:return D
+		try:A=I.post('https://api.lunarclientprod.com/launcher/launch',json=B.req)
+		except I.exceptions.RequestException as C:return D
+		if A.status_code!=200 or A.json()==R:return D
 		B.rjson=A.json();return A
 	def fromFile(A,file):A.req=file.read()
 	def downloadArtifact(A,name):
-		for E in A.rjson[R][S]:
-			if E[T]==name:
+		for E in A.rjson[S][T]:
+			if E[U]==name:
 				try:
-					for B in A.rjson[R][S]:
-						if B[T]==name:C=G.get(B['url'])
-				except G.exceptions.RequestException as F:return D
-				if C.content==Q:return D
+					for B in A.rjson[S][T]:
+						if B[U]==name:C=I.get(B['url'])
+				except I.exceptions.RequestException as F:return D
+				if C.content==R:return D
 				return C.content
-if A[E][U]in[e,f]:
+if A[E][V]in[f,g]:
 	import io,zipfile as o
-	if A[E][U]==e:
-		I=a({'hwid':'na','os':{g:'linux',K:'win32',h:'darwin'}.get(H),'arch':'x64'if X.machine().endswith('64')else'x32',F:A[F],'branch':'master','luanch_type':'OFFLINE','classifier':'optifine'});b=I.download()
-		if b==D:c('Error with sending a launch request.');exit()
-	else:I=a(Q);I.fromFile(P(A[E][f]))
-	p=[A[T]for A in b.json()[R][S]];L=C(A[E][V]);B.makedirs(L,exist_ok=True)
-	for J in p:
-		M=I.downloadArtifact(J)
-		if M==D:c('Error downloading artifact.');exit()
-		if i in J and J.endswith('.zip'):
-			with o.ZipFile(io.BytesIO(M))as q:q.extractall(B.path.join(L,i))
-		with P(B.path.join(L,J),'wb')as r:r.write(M)
-N=[A for A in B.listdir(C(A[E][V]))if A.endswith('.jar')]
-O={j:str(A[j]*1024),'assetindex':'.'.join(A[F].split('.')[:-1]),F:A[F],'gamedir':C({g:'~/.minecraft',K:'~/AppData/Roaming/.minecraft',h:'~/Library/Application Support/minecraft'}.get(H)),'texturesdir':C('~/.lunarclient/textures'),'classpath':';'.join([A for A in N if not A.startswith(W)]),'ichorclasspath':','.join([A for A in N if not A.startswith(W)]),'ichorexternal':[A for A in N if A.startswith(W)][0]}
-O.update(A['custom_variables'])
-m.Popen([{'environment':'javaw'if H==K else d,k:Y(A[l][k]),'lunar':Y(Z(Z(C('~/.lunarclient/jre'))))}.get(A[l][U])]+[n(A)for A in A['arguments']],cwd=C(A[E][V]))
+	if A[E][V]==f:
+		J=b({'hwid':'na','os':{h:'linux',G:'win32',i:'darwin'}.get(F),'arch':'x64'if Y.machine().endswith('64')else'x32',H:A[H],'branch':'master','luanch_type':'OFFLINE','classifier':'optifine'});c=J.download()
+		if c==D:d('Error with sending a launch request.');exit()
+	else:J=b(R);J.fromFile(Q(A[E][g]))
+	p=[A[U]for A in c.json()[S][T]];M=C(A[E][W]);B.makedirs(M,exist_ok=True)
+	for K in p:
+		N=J.downloadArtifact(K)
+		if N==D:d('Error downloading artifact.');exit()
+		if j in K and K.endswith('.zip'):
+			with o.ZipFile(io.BytesIO(N))as q:q.extractall(B.path.join(M,j))
+		with Q(B.path.join(M,K),'wb')as r:r.write(N)
+O=[A for A in B.listdir(C(A[E][W]))if A.endswith('.jar')]
+P={k:str(A[k]*1024),'assetindex':'.'.join(A[H].split('.')[:-1]),H:A[H],'gamedir':C({h:'~/.minecraft',G:'~/AppData/Roaming/.minecraft',i:'~/Library/Application Support/minecraft'}.get(F)),'texturesdir':C('~/.lunarclient/textures'),'classpath':(';'if F==G else':').join([A for A in O if not A.startswith(X)]),'ichorclasspath':','.join([A for A in O if not A.startswith(X)]),'ichorexternal':[A for A in O if A.startswith(X)][0]}
+P.update(A['custom_variables'])
+L.Popen([{'environment':'javaw'if F==G else e,l:Z(A[m][l]),'lunar':Z(a(a(C('~/.lunarclient/jre'))))}.get(A[m][V])]+[n(A)for A in A['arguments']],cwd=C(A[E][W]),stdout=L.DEVNULL,stderr=L.STDOUT)

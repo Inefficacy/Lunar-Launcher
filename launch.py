@@ -106,15 +106,20 @@ variables = {
 		'Darwin': '~/Library/Application Support/minecraft'
 	}.get(os_type)),
 	'texturesdir': modify_path('~/.lunarclient/textures'),
-	'classpath': ';'.join([f for f in jar_files if not f.startswith('OptiFine')]),
+	'classpath': (';' if os_type == 'Windows' else ':').join([f for f in jar_files if not f.startswith('OptiFine')]),
 	'ichorclasspath': ','.join([f for f in jar_files if not f.startswith('OptiFine')]),
 	'ichorexternal': [f for f in jar_files if f.startswith('OptiFine')][0]
 }
 
 variables.update(config['custom_variables'])
 
-subprocess.Popen([{
-	'environment': 'javaw' if os_type == 'Windows' else 'java',
-	'custom': java_location(config['jre']['custom']),
-	'lunar': java_location(earliest_folder(earliest_folder(modify_path('~/.lunarclient/jre'))))
-}.get(config['jre']['mode'])]+[replace_variable(a) for a in config['arguments']], cwd=modify_path(config['launch']['directory']))
+subprocess.Popen(
+	[{
+		'environment': 'javaw' if os_type == 'Windows' else 'java',
+		'custom': java_location(config['jre']['custom']),
+		'lunar': java_location(earliest_folder(earliest_folder(modify_path('~/.lunarclient/jre'))))
+	}.get(config['jre']['mode'])]+[replace_variable(a) for a in config['arguments']],
+	cwd=modify_path(config['launch']['directory']),
+	stdout=subprocess.DEVNULL,
+	stderr=subprocess.STDOUT
+)

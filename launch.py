@@ -24,6 +24,32 @@ def replace_variable(argument):
 			argument = argument.replace(f'%{v}%', variables[v])
 	return argument
 
+agent_path = os.path.join(modify_path(config['weave']['directory']), 'agent.jar')
+
+def download_weave():
+	version_path = os.path.join(modify_path(config['weave']['directory']), 'version.txt')
+	r = requests.get('https://api.github.com/repos/Weave-MC/Weave-Loader/releases/latest')
+	if r.status_code != 200:
+		print('Error sending request to GitHub API.')
+		return
+	j = r.json()
+	if config['weave']['ignore_duplicate']:
+		if os.path.isfile(agent_path) and os.path.isfile(version_path):
+			if j['name'] == open(version_path, 'r').read():
+				return False
+	os.makedirs(modify_path(config['weave']['directory']), exist_ok=True)
+	d = requests.get(j['assets'][0]['browser_download_url'])
+	if d.status_code != 200:
+		print('Error downloading Weave asset.')
+		return False
+	with open(agent_path, 'wb') as f:
+		f.write(d.content)
+
+	with open(version_path, 'w+') as f:
+		f.write(j['name'])
+
+	return True
+
 ###
 # Modified from lcapi.py
 # https://github.com/Inefficacy/Lunar-Archiver/blob/main/lcapi.py
@@ -96,7 +122,10 @@ if config['launch']['mode'] in ['download', 'file']:
 
 jar_files = [f for f in os.listdir(modify_path(config['launch']['directory'])) if f.endswith('.jar')]
 
+download_weave()
+
 variables = {
+	'weave': agent_path,
 	'ram': str(config['ram']*1024),
 	'assetindex': '.'.join(config['version'].split('.')[:-1]),
 	'version': config['version'],

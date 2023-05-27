@@ -9,6 +9,10 @@
 		"mode": "environment/custom/lunar",
 		"custom": "path/to/java/home"
 	},
+	"weave": {
+		"ignore_duplicate": true,
+		"path": "~/.lunarclient/weave"
+	},
 	"ram": 8,
 	"arguments": [
 		"--add-modules", "jdk.naming.dns",
@@ -18,8 +22,8 @@
 		"--add-opens", "java.base/java.io=ALL-UNNAMED",
 		"-Xms%ram%m",
 		"-Xmx%ram%m",
+		"-javaagent:%weave%",
 		"-Djava.library.path=natives",
-		"-XX:+DisableAttachMechanism",
 		"-cp", "%classpath%", "com.moonsworth.lunar.genesis.Genesis",
 		"--version", "%version%",
 		"--accessToken", "0",

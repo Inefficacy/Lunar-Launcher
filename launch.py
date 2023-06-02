@@ -41,8 +41,9 @@ class LcAPI:
 			return False
 		self.rjson = r.json()
 		return r
-	def fromFile(self, file):
-		self.req = file.read()
+	def fromFile(self, f):
+		self.rjson = json.load(f)
+		return self.rjson
 	def downloadArtifact(self, name):
 		for artifact in self.rjson['launchTypeData']['artifacts']:
 			if artifact['name'] == name:
@@ -73,11 +74,12 @@ if config['launch']['mode'] in ['download', 'file']:
 		if launch_request == False:
 			print('Error with sending a launch request.')
 			exit()
+		launch_json = launch_request.json()
 	else:
 		api = LcAPI(None)
-		api.fromFile(open(config['launch']['file']))
+		launch_json = api.fromFile(open(config['launch']['file']))
 
-	artifacts = [a['name'] for a in launch_request.json()['launchTypeData']['artifacts']]
+	artifacts = [a['name'] for a in launch_json['launchTypeData']['artifacts']]
 
 	savedir = modify_path(config['launch']['directory'])
 

@@ -29,12 +29,12 @@ if config['launch']['mode'] in ['download', 'file']:
 	import zipfile
 	API.getUpdate()
 	if config['launch']['mode'] == 'download':
-		launch_response = API.getLaunch({
-			'os': { 'Linux': 'linux', 'Windows': 'win32', 'Darwin': 'darwin' }.get(os_type),
-			'os_release': platform.version(),
-			'arch': platform.machine().lower() if platform.machine().lower() in ['arm', 'arm64', 'ia32', 'mips', 'mipsel', 'ppc', 'ppc64', 's390', 's390x', 'x64'] else 'x64',
-			'version': config['version']
-		})
+		launch_response = API.getLaunch(
+			os = { 'Linux': 'linux', 'Windows': 'win32', 'Darwin': 'darwin' }.get(os_type),
+			os_release = platform.version(),
+			arch = platform.machine().lower() if platform.machine().lower() in ['arm', 'arm64', 'ia32', 'mips', 'mipsel', 'ppc', 'ppc64', 's390', 's390x', 'x64'] else 'x64',
+			version = config['version']
+		)
 	else:
 		launch_response = json.load(open(config['launch']['file'], 'r'))
 
